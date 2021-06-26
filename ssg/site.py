@@ -1,6 +1,8 @@
+import sys
 from pathlib import Path
-from ssg.parsers import Parser
 from typing import List
+
+from ssg.parsers import Parser
 
 
 class Site:
@@ -31,4 +33,10 @@ class Site:
         if parser is not None:
             parser.parse(path, self.source, self.dest)
         else:
-            print("Not Implemented")
+            self.error(
+                "No parser for the {} extension, file skipped!".format(path.suffix)
+            )
+
+    @staticmethod
+    def error(message: str) -> None:
+        sys.stderr.write("\x1b[1;31m{}\n".format(message))
